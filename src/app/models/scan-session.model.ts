@@ -1,4 +1,4 @@
-import { ScanModel } from './scan.model'
+import { ScanModel } from './scan.model';
 
 export interface ScanSessionModel {
     id: number;

@@ -1,22 +1,30 @@
 import { Component, OnInit, NgZone, Inject, ViewChild, ElementRef } from '@angular/core';
 
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
-import { SettingsModel } from '../../models/settings.model'
-import { ScanSessionModel } from '../../models/scan-session.model'
-import { Storage } from '../../services/storage.service'
-import { StringComponentModel } from "../../models/string-component.model";
+import { SettingsModel } from '../../models/settings.model';
+import { ScanSessionModel } from '../../models/scan-session.model';
+import { Storage } from '../../services/storage.service';
+import { StringComponentModel } from '../../models/string-component.model';
 
 import { ElectronService } from '../../services/electron.service';
 import { UtilsService } from '../../services/utils.service';
 import { ConfigService } from '../../services/config.service';
 import { remote } from 'electron';
 import { ScanModel } from '../../models/scan.model';
-import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel, requestModelUpdateScanSession } from '../../models/request.model';
+import {
+    RequestModelPutScan,
+    RequestModelDeleteScan,
+    RequestModelDeleteScanSession,
+    RequestModelSetScanSessions,
+    RequestModelPutScanSession,
+    RequestModel,
+    RequestModelUpdateScanSession
+} from '../../models/request.model';
 
 @Component({
-    selector: 'app-main',
+    selector: 'bps-main',
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss'],
 })
@@ -82,27 +90,27 @@ export class MainComponent implements OnInit {
         private utilsService: UtilsService,
     ) {
         if (this.electronService.isElectron()) {
-            this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_SET_SCAN_SESSIONS, (e, request: RequestModelSetScanSessions) => {
                 this.ngZone.run(() => {
                     this.scanSessions = request.scanSessions;
                     this.save();
                 });
-            })
+            });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSION, (e, request: requestModelPutScanSession) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_PUT_SCAN_SESSION, (e, request: RequestModelPutScanSession) => {
                 this.ngZone.run(() => {
                     this.scanSessions.unshift(request.scanSessions);
                     this.selectedScanSession = this.scanSessions[0];
                     this.scanSessionsListElement.nativeElement.scrollTop = 0;
                     this.save();
                 });
-            })
+            });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_PUT_SCAN, (e, request: RequestModelPutScan) => {
                 this.ngZone.run(() => {
 
-                    let alredInIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (alredInIndex != -1) {
+                    const alredInIndex = this.scanSessions.findIndex(x => x.id === request.scanSessionId);
+                    if (alredInIndex !== -1) {
                         if (request.scan.repeated) {
                             // TODO: animate the already present scan
                         } else {
@@ -113,38 +121,39 @@ export class MainComponent implements OnInit {
                             this.selectedScanSession = this.scanSessions[alredInIndex];
                         }
                     } else {
-                        // TODO: request a scansessions sync
+                        // TODO: request a scan sessions sync
                     }
                     this.save();
                 });
             });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_DELETE_SCAN, (e, request: RequestModelDeleteScan) => {
                 this.ngZone.run(() => {
 
-                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (scanSessionIndex != -1) {
-                        let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+                    const scanSessionIndex = this.scanSessions.findIndex(x => x.id === request.scanSessionId);
+                    if (scanSessionIndex !== -1) {
+                        const scanIndex = this.scanSessions[scanSessionIndex]
+                            .scannings.findIndex(x => x.id === request.scan.id);
                         this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
                     }
                     this.save();
                 });
             });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSession) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_DELETE_SCAN_SESSION, (e, request: RequestModelDeleteScanSession) => {
                 this.ngZone.run(() => {
-                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (scanSessionIndex != -1) {
+                    const scanSessionIndex = this.scanSessions.findIndex(x => x.id === request.scanSessionId);
+                    if (scanSessionIndex !== -1) {
                         this.scanSessions.splice(scanSessionIndex, 1);
                         this.save();
                     }
                 });
             });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_UPDATE_SCAN_SESSION, (e, request: requestModelUpdateScanSession) => {
+            this.electronService.ipcRenderer.on(RequestModel.ACTION_UPDATE_SCAN_SESSION, (e, request: RequestModelUpdateScanSession) => {
                 this.ngZone.run(() => {
-                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (scanSessionIndex != -1) {
+                    const scanSessionIndex = this.scanSessions.findIndex(x => x.id === request.scanSessionId);
+                    if (scanSessionIndex !== -1) {
                         this.scanSessions[scanSessionIndex].name = request.scanSessionName;
                         this.scanSessions[scanSessionIndex].date = request.scanSessionDate;
                         this.save();
@@ -161,13 +170,13 @@ export class MainComponent implements OnInit {
 
     ngOnInit() {
         this.dragulaService.drop.subscribe(value => {
-            if (value[3].className.indexOf('components-available') != -1) {
+            if (value[3].className.indexOf('components-available') !== -1) {
                 this.availableComponents = this.getAvailableComponents();
             }
         });
 
         this.dragulaService.out.subscribe(value => {
-            if (value[3].className.indexOf('components-typed') != -1) {
+            if (value[3].className.indexOf('components-typed') !== -1) {
                 this.dragulaService.find('components').drake.remove();
             }
         });
@@ -191,7 +200,7 @@ export class MainComponent implements OnInit {
 
     setOpenAtLogin(openAtLogin) {
         if (this.electronService.isElectron()) {
-            this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin })
+            this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin });
         }
     }
 

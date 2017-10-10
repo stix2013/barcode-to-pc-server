@@ -1,11 +1,11 @@
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
-import { HttpApi } from './services/http-api.service'
-import { RemoteSettingsModel } from './models/http-api.model'
+import { HttpApi } from './services/http-api.service';
+import { RemoteSettingsModel } from './models/http-api.model';
 import { ElectronService } from './services/electron.service';
 import { ConfigService } from './services/config.service';
 
 @Component({
-    selector: 'app-root',
+    selector: 'bps-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
                 const version = this.electronService.app.getVersion();
                 // console.log('local: ' , version, ' remote:', data.serverVersion);
-                if (version != data.serverVersion) {
+                if (version !== data.serverVersion) {
 
                     this.electronService.dialog.showMessageBox({
                         type: 'warning',

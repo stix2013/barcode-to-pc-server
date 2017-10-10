@@ -8,11 +8,11 @@
     </div>
 
     <div class="col-half left" #scanSessionsListElement>
-        <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
+        <bps-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></bps-scan-sessions>
     </div>
 
     <div class="col-half right" #scanSessionListElement>
-        <app-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></app-scan-session>
+        <bps-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></bps-scan-session>
     </div>
 </div>
 
@@ -66,7 +66,7 @@
                                 <!-- <button *ngFor="let component of availableComponents" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}"
                                     [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
                                     [innerHTML]="component.name"></button> -->
-                                <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
+                                <bps-string-component *ngFor="let component of availableComponents" [component]="component"></bps-string-component>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                 <!-- <button *ngFor="let component of settings.typedString" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}" [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
                                     [innerHTML]="component.name"></button> -->
 
-                                <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
+                                <bps-string-component *ngFor="let component of settings.typedString" [component]="component"></bps-string-component>
 
                             </div>
                         </div>

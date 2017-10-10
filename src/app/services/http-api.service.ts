@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs'
-import { RemoteSettingsModel } from '../models/http-api.model'
-import { ConfigService } from '../services/config.service'
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+// import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { RemoteSettingsModel } from '../models/http-api.model';
+import { ConfigService } from '../services/config.service';
 
 @Injectable()
 export class HttpApi {
@@ -32,5 +34,4 @@ export class HttpApi {
         console.error(errMsg);
         return Observable.throw(errMsg);
     }
-
 }

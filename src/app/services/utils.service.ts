@@ -18,11 +18,11 @@ export class UtilsService {
       }
 
       Promise.all([this.getDefaultLocalAddress(), this.getHostname(), this.getLocalAddresses()]).then((results: any[]) => {
-        let defaultLocalAddress = results[0];
-        let hostname = results[1];
-        let localAddresses = results[2];
+        const defaultLocalAddress = results[0];
+        const hostname = results[1];
+        const localAddresses = results[2];
 
-        let index = localAddresses.indexOf(defaultLocalAddress);
+        const index = localAddresses.indexOf(defaultLocalAddress);
         if (index > -1) { // removes the defaultLocalAddress from the localAddresses list
           localAddresses.splice(index, 1);
         }
@@ -30,10 +30,13 @@ export class UtilsService {
           localAddresses.unshift(defaultLocalAddress);
         }
         // this.ngZone.run(() => {
-        resolve(ConfigService.CONNECT_URL_BASE + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
+        resolve(
+          ConfigService.CONNECT_URL_BASE +
+          '/?h=' + encodeURIComponent(hostname) +
+          '&a=' + encodeURIComponent(localAddresses.join('-')));
         // })
       });
-    })
+    });
   }
 
   private getLocalAddresses(): Promise<string> {
@@ -42,7 +45,7 @@ export class UtilsService {
         resolve(localAddresses);
       });
       this.electronService.ipcRenderer.send('getLocalAddresses');
-    })
+    });
   }
 
 
@@ -52,7 +55,7 @@ export class UtilsService {
         resolve(defaultLocalAddress);
       });
       this.electronService.ipcRenderer.send('getDefaultLocalAddress');
-    })
+    });
   }
 
 
@@ -62,7 +65,6 @@ export class UtilsService {
         resolve(hostname);
       });
       this.electronService.ipcRenderer.send('getHostname');
-    })
+    });
   }
-
 }

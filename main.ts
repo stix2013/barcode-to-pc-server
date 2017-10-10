@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
 
-import * as robotjs from 'robotjs'
+import * as robotjs from 'robotjs';
 import * as network from 'network';
 import * as os from 'os';
 import * as path from 'path';
@@ -21,19 +21,19 @@ const bonjour = b();
 let mainWindow;
 
 let mdnsAd;
-let developmentMode = process.argv.slice(1).some(val => val === '--dev');
+const developmentMode = process.argv.slice(1).some(val => val === '--dev');
 
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1024, height: 720,
         minWidth: 800, minHeight: 600
-    })
+    });
 
     if (developmentMode) {
         mainWindow.webContents.on('did-fail-load', () => {
             setTimeout(() => mainWindow.reload(), 2000);
-        })
+        });
         mainWindow.loadURL('http://localhost:4200');
         mainWindow.webContents.openDevTools();
     } else {
@@ -49,24 +49,23 @@ function createWindow() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        mainWindow = null
+        mainWindow = null;
         wss.clients.forEach(client => {
             // if (client.readyState === WebSocket.OPEN) {
             client.close();
             // }
         });
         bonjour.unpublishAll(() => {
-            //bonjour.destroy()
+            // bonjour.destroy()
         });
 
         if (mdnsAd) {
             mdnsAd.stop();
         }
-    })
-
+    });
 
     try {
-        var mdns = require('mdns');
+        const mdns = require('mdns');
 
         mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), PORT, {
             name: 'Barcode to PC server - ' + getNumber()
@@ -76,10 +75,12 @@ function createWindow() {
         dialog.showMessageBox(mainWindow, {
             type: 'warning',
             title: 'Error',
-            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.',
+            message: `Apple Bonjour is missing.\n
+            The app may fail to detect automatically the server.\n\n
+            To remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.`,
         });
 
-        var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT })
+        const bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT });
 
         bonjourService.on('error', err => { // err is never set?
             dialog.showMessageBox(mainWindow, {
@@ -94,13 +95,15 @@ function createWindow() {
     const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
         if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore()
-            mainWindow.focus()
+            if (mainWindow.isMinimized()) {
+                mainWindow.restore();
+            }
+            mainWindow.focus();
         }
-    })
+    });
 
     if (isSecondInstance) {
-        app.quit()
+        app.quit();
     }
 }
 
@@ -108,24 +111,24 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
-        app.quit()
+        app.quit();
     }
-})
+});
 
 app.on('activate', function () {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
-        createWindow()
+        createWindow();
     }
-})
+});
 
 if (app.setAboutPanelOptions) {
     app.setAboutPanelOptions({
@@ -148,7 +151,7 @@ if (app.setAboutPanelOptions) {
 // In main process.
 
 let ipcClient;
-var settings: SettingsModel;
+let settings: SettingsModel;
 
 ipcMain
     .on('ready', (event, arg) => { // the renderer will send a 'ready' message once is ready
@@ -157,14 +160,17 @@ ipcMain
         settings = arg;
     }).on('getLocalAddresses', (event, arg) => {
         network.get_interfaces_list((err, networkInterfaces) => {
-            let addresses = [];
+            const addresses = [];
 
-            for (let key in networkInterfaces) {
-                let ip = networkInterfaces[key].ip_address;
-                if (ip) {
-                    addresses.push(ip);
+            for (const key in networkInterfaces) {
+                if (networkInterfaces.hasOwnProperty(key)) {
+                    const ip = networkInterfaces[key].ip_address;
+                    if (ip) {
+                        addresses.push(ip);
+                    }
                 }
-            };
+            }
+
             ipcClient.send('localAddresses', addresses);
         });
     }).on('getDefaultLocalAddress', (event, arg) => {
@@ -177,22 +183,24 @@ ipcMain
 
 
 wss.on('connection', (ws, req) => {
-    console.log("ws(incoming connection)")
+    console.log('ws(incoming connection)');
 
-    let deviceName = "unknown";
+    let deviceName = 'unknown';
     // const clientAddress = req.connection.remoteAddress;
     ipcClient.send('clientConnected', '');
 
     ws.on('message', messageData => {
-        console.log('ws(message): ', messageData)
-        if (!mainWindow || !ipcClient) return;
-        let obj = JSON.parse(messageData.toString());
+        console.log('ws(message): ', messageData);
+        if (!mainWindow || !ipcClient) {
+            return;
+        }
+        const obj = JSON.parse(messageData.toString());
 
         switch (obj.action) {
-            case requestModel.ACTION_PUT_SCAN: {
+            case RequestModel.ACTION_PUT_SCAN: {
 
-                let request: requestModelPutScan = obj;
-                let barcode = request.scan.text;
+                const request: RequestModelPutScan = obj;
+                const barcode = request.scan.text;
 
                 if (settings.enableRealtimeStrokes) {
                     settings.typedString.forEach((stringComponent: StringComponentModel) => {
@@ -210,11 +218,13 @@ wss.on('connection', (ws, req) => {
                                 break;
                             }
                             case 'variable': {
+                                /* tslint:disable:no-eval */
                                 robotjs.typeString(eval(stringComponent.value));
                                 break;
                             }
                             case 'function': {
                                 // do checks to prevent injections
+                                /* tslint:disable:no-eval */
                                 robotjs.typeString(eval(barcode));
                                 break;
                             }
@@ -228,18 +238,18 @@ wss.on('connection', (ws, req) => {
                 break;
             }
 
-            case requestModel.ACTION_SET_SCAN_SESSIONS: {
+            case RequestModel.ACTION_SET_SCAN_SESSIONS: {
 
 
                 break;
             }
 
-            case requestModel.ACTION_PUT_SCAN_SESSION: {
+            case RequestModel.ACTION_PUT_SCAN_SESSION: {
 
                 break;
             }
 
-            case requestModel.ACTION_DELETE_SCAN_SESSION: {
+            case RequestModel.ACTION_DELETE_SCAN_SESSION: {
 
                 break;
             }
@@ -265,7 +275,7 @@ wss.on('connection', (ws, req) => {
 
             }
 
-            case requestModel.ACTION_UPDATE_SCAN_SESSION: {
+            case RequestModel.ACTION_UPDATE_SCAN_SESSION: {
 
                 break;
             }
@@ -287,7 +297,7 @@ wss.on('connection', (ws, req) => {
 
 
 function getNumber() {
-    let hostname = os.hostname();
+    const hostname = os.hostname();
     let result = '';
     for (let i = 0; i < hostname.length; i++) {
         result += hostname[i].charCodeAt(0);

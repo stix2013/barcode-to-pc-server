@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { StringComponentModel } from "app/models/string-component.model";
+import { StringComponentModel } from 'app/models/string-component.model';
 
 @Component({
-  selector: 'string-component',
+  selector: 'bps-string-component',
   templateUrl: './string-component.component.html',
   styleUrls: ['./string-component.component.scss']
 })

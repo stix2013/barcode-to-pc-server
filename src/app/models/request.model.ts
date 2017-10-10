@@ -1,7 +1,7 @@
-import { ScanSessionModel } from "./scan-session.model";
-import { ScanModel } from "./scan.model";
+import { ScanSessionModel } from './scan-session.model';
+import { ScanModel } from './scan.model';
 
-export abstract class requestModel {
+export abstract class RequestModel {
     // protected _action: string;
     // get action() {
     //     return this._action;
@@ -19,6 +19,11 @@ export abstract class requestModel {
     public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
     public static readonly ACTION_DELETE_SCAN = 'deleteScan';
     public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
+
+    readonly action: string;
+    // i can't put all the fromObject(s) here as static methods because the overload won't work
+    // it is because when typescript gets compiled to js the obj type is lost and the methods result all with the same signature
+    public abstract fromObject(obj: any): RequestModel;
 }
 
 export class requestModelPing extends requestModel {
@@ -39,7 +44,7 @@ export class requestModelHelo extends requestModel {
     }
 }
 
-export class requestModelSetScanSessions extends requestModel {
+export class RequestModelSetScanSessions extends RequestModel {
     action = 'setScanSessions';
     scanSessions: ScanSessionModel[];
     sendKeystrokes: boolean;
@@ -51,7 +56,7 @@ export class requestModelSetScanSessions extends requestModel {
     }
 }
 
-export class requestModelPutScanSession extends requestModel {
+export class RequestModelPutScanSession extends RequestModel {
     action = 'putScanSession';
     scanSessions: ScanSessionModel;
     sendKeystrokes: boolean;
@@ -62,7 +67,7 @@ export class requestModelPutScanSession extends requestModel {
     }
 }
 
-export class requestModelPutScan extends requestModel {
+export class RequestModelPutScan extends RequestModel {
     action = 'putScan';
     scan: ScanModel;
     scanSessionId: number;
@@ -76,7 +81,7 @@ export class requestModelPutScan extends requestModel {
     }
 }
 
-export class requestModelDeleteScanSession extends requestModel {
+export class RequestModelDeleteScanSession extends RequestModel {
     action = 'deleteScanSession';
     scanSessionId: number;
 
@@ -86,10 +91,10 @@ export class requestModelDeleteScanSession extends requestModel {
     }
 }
 
-export class requestModelDeleteScan extends requestModel {
+export class RequestModelDeleteScan extends RequestModel {
     action = 'deleteScan';
     scan: ScanModel;
-    scanSessionId: number
+    scanSessionId: number;
 
     public fromObject(obj: ({ scan: ScanModel, scanSessionId: number })) {
         this.scan = obj.scan;
@@ -98,7 +103,7 @@ export class requestModelDeleteScan extends requestModel {
     }
 }
 
-export class requestModelUpdateScanSession extends requestModel {
+export class RequestModelUpdateScanSession extends RequestModel {
     action = 'updateScanSession';
     scanSessionId: number;
     scanSessionName: string;

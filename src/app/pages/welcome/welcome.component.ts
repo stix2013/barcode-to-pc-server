@@ -6,12 +6,12 @@ import { ConfigService } from '../../services/config.service';
 import { ElectronService } from '../../services/electron.service';
 
 @Component({
-  selector: 'app-welcome',
+  selector: 'bps-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements OnInit {
-  @ViewChild("qrCode") qrCode;
+  @ViewChild('qrCode') qrCode;
 
   public qrCodeUrl = '';
 
@@ -26,7 +26,7 @@ export class WelcomeComponent implements OnInit {
         this.storage.everConnected = true;
         this.router.navigate(['/scan-session']);
       });
-      this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);    
+      this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
     }
 
   }

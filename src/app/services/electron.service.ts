@@ -14,8 +14,8 @@ export class ElectronService {
 
   constructor() {
     if (this.isElectron()) {
-      let electron = window.require('electron');
-      
+      const electron = window.require('electron');
+
       this.ipcRenderer = electron.ipcRenderer;
       this.dialog = electron.remote.dialog;
       this.app = electron.remote.app;
@@ -28,5 +28,4 @@ export class ElectronService {
   isElectron() {
     return window && window.process && window.process.type;
   }
-
 }

@@ -41,7 +41,7 @@
       }
     ],
     "no-arg": true,
-    "no-bitwise": true,
+    "no-bitwise": false,
     "no-console": [
       true,
       "debug",
@@ -123,7 +123,7 @@
     "component-selector": [
       true,
       "element",
-      "app",
+      "bps",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

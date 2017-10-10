@@ -1,12 +1,12 @@
-import { StringComponentModel } from "./string-component.model";
+import { StringComponentModel } from './string-component.model';
 
 export class SettingsModel {
-    enableRealtimeStrokes: boolean = true;
-    enableOpenInBrowser: boolean = false;
+    enableRealtimeStrokes = true;
+    enableOpenInBrowser = false;
     typedString: StringComponentModel[] = [
         { name: 'BARCODE', value: 'barcode', type: 'barcode' },
         { name: 'ENTER', value: 'enter', type: 'key' }
     ];
-    newLineCharacter: string = 'CRLF';
-    enableQuotes: boolean = true;
+    newLineCharacter = 'CRLF';
+    enableQuotes = true;
 }

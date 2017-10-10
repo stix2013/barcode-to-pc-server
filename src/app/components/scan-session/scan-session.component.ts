@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { ScanSessionModel } from '../../models/scan-session.model'
-import { ElectronService } from '../../services/electron.service'
+import { ScanSessionModel } from '../../models/scan-session.model';
+import { ElectronService } from '../../services/electron.service';
 
 @Component({
-    selector: 'app-scan-session',
+    selector: 'bps-scan-session',
     templateUrl: './scan-session.component.html',
     styleUrls: ['./scan-session.component.scss'],
     animations: [
@@ -21,7 +21,7 @@ export class ScanSessionComponent implements OnInit {
     @Input() animateLast = false;
 
     constructor(
-        private electronService: ElectronService,
+        public electronService: ElectronService,
     ) { }
 
     ngOnInit() { }
@@ -30,6 +30,6 @@ export class ScanSessionComponent implements OnInit {
         if (!scan || !scan.text || !scan.text.length) {
             return false;
         }
-        return scan.text.indexOf('http') != -1 || scan.text.indexOf('ftp') != -1;
+        return scan.text.indexOf('http') !== -1 || scan.text.indexOf('ftp') !== -1;
     }
 }

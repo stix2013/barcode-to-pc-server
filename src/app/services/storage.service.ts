@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { ScanSessionModel } from '../models/scan-session.model'
-import { ScanModel } from '../models/scan.model'
-import { SettingsModel } from '../models/settings.model'
+import { ScanSessionModel } from '../models/scan-session.model';
+import { ScanModel } from '../models/scan.model';
+import { SettingsModel } from '../models/settings.model';
 
 @Injectable()
 export class Storage {
-    private static SCAN_SESSIONS = "scan_sessions";
-    private static SETTINGS = "settings";
-    private static EVER_CONNECTED = "ever_connected";
+    private static SCAN_SESSIONS = 'scan_sessions';
+    private static SETTINGS = 'settings';
+    private static EVER_CONNECTED = 'ever_connected';
 
     _scanSessions: ScanSessionModel[] = [];
     _settings: SettingsModel = new SettingsModel();
-    _everConnected: boolean = false;
+    _everConnected = false;
 
     constructor(
     ) { }
 
     get scanSessions(): ScanSessionModel[] {
-        let ss = JSON.parse(localStorage.getItem(Storage.SCAN_SESSIONS));
+        const ss = JSON.parse(localStorage.getItem(Storage.SCAN_SESSIONS));
         if (ss) {
             this._scanSessions = ss;
         }
@@ -31,9 +31,9 @@ export class Storage {
 
 
     get settings(): SettingsModel {
-        let s = JSON.parse(localStorage.getItem(Storage.SETTINGS));
-        if (s) {
-            this._settings = s;
+        const storage = JSON.parse(localStorage.getItem(Storage.SETTINGS));
+        if (storage) {
+            this._settings = storage;
         }
         return this._settings;
     }
@@ -45,7 +45,7 @@ export class Storage {
 
 
     get everConnected(): boolean {
-        let ec = JSON.parse(localStorage.getItem(Storage.EVER_CONNECTED));
+        const ec = JSON.parse(localStorage.getItem(Storage.EVER_CONNECTED));
         if (ec) {
             this._everConnected = ec;
         }
@@ -56,5 +56,4 @@ export class Storage {
         localStorage.setItem(Storage.EVER_CONNECTED, JSON.stringify(everConnected));
         this._everConnected = everConnected;
     }
-
 }
