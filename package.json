@@ -1,12 +1,13 @@
 {
-  "name": "barcode-to-pc-server",
-  "description": "Barcode to PC server app",
+  "name": "nysco-qrcode-server",
+  "description": "NYSco QRCode Server app",
   "keywords": [
     "barcode",
+    "qrcode",
     "app",
     "remote"
   ],
-  "version": "1.1.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
@@ -38,7 +39,7 @@
   "private": true,
   "build": {
     "compression": "maximum",
-    "appId": "com.barcodetopc.server",
+    "appId": "com.nysco.qrcodeserver",
     "mac": {
       "category": "public.app-category.utilities"
     },
@@ -53,15 +54,15 @@
     }
   },
   "dependencies": {
-    "@angular/animations": "^4.4.3",
-    "@angular/common": "^4.2.4",
-    "@angular/compiler": "^4.2.4",
-    "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4",
-    "@angular/http": "^4.2.4",
-    "@angular/platform-browser": "^4.2.4",
-    "@angular/platform-browser-dynamic": "^4.2.4",
-    "@angular/router": "^4.2.4",
+    "@angular/animations": "^4.4.5",
+    "@angular/common": "^4.4.5",
+    "@angular/compiler": "^4.4.5",
+    "@angular/core": "^4.4.5",
+    "@angular/forms": "^4.4.5",
+    "@angular/http": "^4.4.5",
+    "@angular/platform-browser": "^4.4.5",
+    "@angular/platform-browser-dynamic": "^4.4.5",
+    "@angular/router": "^4.4.5",
     "angular2-qrcode": "^2.0.1",
     "bonjour": "^3.5.0",
     "bootstrap-sass": "^3.3.7",
@@ -80,14 +81,14 @@
   },
   "devDependencies": {
     "@angular/cli": "~1.4.5",
-    "@angular/compiler-cli": "^4.2.4",
-    "@angular/language-service": "^4.2.4",
+    "@angular/compiler-cli": "^4.4.5",
+    "@angular/language-service": "^4.4.5",
     "@types/bonjour": "^3.5.5",
     "@types/electron": "^1.6.10",
     "@types/file-saver": "0.0.1",
     "@types/jasmine": "~2.6.0",
     "@types/jasminewd2": "~2.0.2",
-    "@types/node": "~8.0.33",
+    "@types/node": "^8.0.34",
     "@types/papaparse": "^4.1.28",
     "codelyzer": "~3.2.1",
     "copyfiles": "1.2.0",
@@ -106,6 +107,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.3.0",
     "tslint": "^5.7.0",
-    "typescript": "~2.3.4"
+    "typescript": "~2.3.4",
+    "webpack-sources": "^1.0.1"
   }
 }

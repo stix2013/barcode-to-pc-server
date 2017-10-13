@@ -24,7 +24,7 @@ import { StringComponentComponent } from './components/string-component/string-c
 
 import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { DragulaModule } from 'ng2-dragula';
-import { CircleModule } from './components/circle-text/circle.module';
+import { CircleModule } from './circle-text/circle.module';
 
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 

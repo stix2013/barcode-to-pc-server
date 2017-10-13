@@ -23,7 +23,9 @@ export class AppComponent implements OnInit {
             if (this.electronService.isElectron()) {
 
                 const version = this.electronService.app.getVersion();
-                // console.log('local: ' , version, ' remote:', data.serverVersion);
+                console.log('local: ' , version, ' remote:', data.serverVersion);
+                // disable check new vesrion
+                /*
                 if (version !== data.serverVersion) {
 
                     this.electronService.dialog.showMessageBox({
@@ -37,6 +39,7 @@ export class AppComponent implements OnInit {
                         }
                     });
                 }
+                */
             }
         });
     }
