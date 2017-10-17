@@ -9,9 +9,17 @@ import * as WebSocket from 'ws';
 const PORT = 57891;
 const wss = new WebSocket.Server({ port: PORT });
 
-import * as b from 'bonjour'
-import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
-import { responseModelHelo, responseModelPong } from './src/app/models/response.model';
+import * as b from 'bonjour';
+import { ProtocolsActions } from './src/app/models/protocols-const';
+import {
+    RequestModelDeleteScanSession,
+    RequestModelPutScanSession,
+    RequestModelSetScanSessions,
+    RequestModelPutScan,
+    RequestModel,
+    RequestModelHelo
+} from './src/app/models/request.model';
+import { ResponseModelHelo, ResponseModelPong } from './src/app/models/response.model';
 import { StringComponentModel } from './src/app/models/string-component.model';
 import { SettingsModel } from './src/app/models/settings.model';
 const bonjour = b();
@@ -86,7 +94,7 @@ function createWindow() {
             dialog.showMessageBox(mainWindow, {
                 type: 'error',
                 title: 'Error',
-                message: 'An error occured while announcing the server.'
+                message: 'An error ocurred while announcing the server.'
             });
         });
     }
@@ -197,7 +205,7 @@ wss.on('connection', (ws, req) => {
         const obj = JSON.parse(messageData.toString());
 
         switch (obj.action) {
-            case RequestModel.ACTION_PUT_SCAN: {
+            case ProtocolsActions.ACTION_PUT_SCAN: {
 
                 const request: RequestModelPutScan = obj;
                 const barcode = request.scan.text;
@@ -238,31 +246,31 @@ wss.on('connection', (ws, req) => {
                 break;
             }
 
-            case RequestModel.ACTION_SET_SCAN_SESSIONS: {
+            case ProtocolsActions.ACTION_SET_SCAN_SESSIONS: {
 
 
                 break;
             }
 
-            case RequestModel.ACTION_PUT_SCAN_SESSION: {
+            case ProtocolsActions.ACTION_PUT_SCAN_SESSION: {
 
                 break;
             }
 
-            case RequestModel.ACTION_DELETE_SCAN_SESSION: {
+            case ProtocolsActions.ACTION_DELETE_SCAN_SESSION: {
 
                 break;
             }
 
-            case requestModel.ACTION_PING: {
-                ws.send(JSON.stringify(new responseModelPong()));
+            case ProtocolsActions.ACTION_PING: {
+                ws.send(JSON.stringify(new ResponseModelPong()));
                 break;
             }
 
 
-            case requestModel.ACTION_HELO: {
-                let request: requestModelHelo = obj;
-                let response = new responseModelHelo();
+            case ProtocolsActions.ACTION_HELO: {
+                const request: RequestModelHelo = obj;
+                const response = new ResponseModelHelo();
                 response.fromObject({
                     version: app.getVersion()
                 });
@@ -275,7 +283,7 @@ wss.on('connection', (ws, req) => {
 
             }
 
-            case RequestModel.ACTION_UPDATE_SCAN_SESSION: {
+            case ProtocolsActions.ACTION_UPDATE_SCAN_SESSION: {
 
                 break;
             }

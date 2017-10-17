@@ -1,13 +1,14 @@
-export abstract class responseModel {
-    readonly action: string;
-    public abstract fromObject(obj: any): responseModel;
+import { ProtocolsActions } from './protocols-const';
 
-    public static readonly ACTION_HELO = 'helo';    
-    public static readonly ACTION_PONG = 'pong';
-    
+export abstract class ResponseModel {
+    readonly action: string;
+    public abstract fromObject(obj: any): ResponseModel;
+
+    // public static readonly ACTION_HELO = 'helo';
+    // public static readonly ACTION_PONG = 'pong';
 }
 
-export class responseModelHelo {
+export class ResponseModelHelo {
     action: 'helo';
     version: string;
 
@@ -18,7 +19,7 @@ export class responseModelHelo {
 }
 
 
-export class responseModelPong extends responseModel {
+export class ResponseModelPong extends ResponseModel {
     action = 'pong';
 
     public fromObject(obj: ({})) {

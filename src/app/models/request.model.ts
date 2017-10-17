@@ -7,18 +7,14 @@ export abstract class RequestModel {
     //     return this._action;
     // }
 
-    readonly action: string;
-    // i can't put all the fromObject(s) here as static methods because the overload won't work
-    // it is because when typescript gets compiled to js the obj type is lost and the methods result all with the same signature
-    public abstract fromObject(obj: any): requestModel;
-    public static readonly ACTION_PING = 'ping';
-    public static readonly ACTION_HELO = 'helo';
-    public static readonly ACTION_SET_SCAN_SESSIONS = 'setScanSessions';
-    public static readonly ACTION_PUT_SCAN_SESSION = 'putScanSession';
-    public static readonly ACTION_PUT_SCAN = 'putScan';
-    public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
-    public static readonly ACTION_DELETE_SCAN = 'deleteScan';
-    public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
+    // public static readonly ACTION_PING = 'ping';
+    // public static readonly ACTION_HELO = 'helo';
+    // public static readonly ACTION_SET_SCAN_SESSIONS = 'setScanSessions';
+    // public static readonly ACTION_PUT_SCAN_SESSION = 'putScanSession';
+    // public static readonly ACTION_PUT_SCAN = 'putScan';
+    // public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
+    // public static readonly ACTION_DELETE_SCAN = 'deleteScan';
+    // public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
 
     readonly action: string;
     // i can't put all the fromObject(s) here as static methods because the overload won't work
@@ -26,7 +22,7 @@ export abstract class RequestModel {
     public abstract fromObject(obj: any): RequestModel;
 }
 
-export class requestModelPing extends requestModel {
+export class RequestModelPing extends RequestModel {
     action = 'ping';
 
     public fromObject(obj: ({})) {
@@ -34,7 +30,7 @@ export class requestModelPing extends requestModel {
     }
 }
 
-export class requestModelHelo extends requestModel {
+export class RequestModelHelo extends RequestModel {
     action = 'helo';
     deviceName: string;
 
